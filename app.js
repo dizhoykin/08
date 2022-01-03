@@ -44,3 +44,58 @@ const content = [
     'caption': 'Photo by Sonya Romanovska on Unsplash'
   },
 ]
+
+const leftButton = document.querySelector('.left');
+const rightButton = document.querySelector('.right');
+const thumbnailsList = document.querySelectorAll('li');
+const featureImg = document.querySelector('.feature').querySelector('img');
+const caption = document.querySelector('.caption');
+
+const classRemover = (elementsList, className) => {
+  for (let elementsItem of elementsList) {
+    elementsItem.classList.remove(className);
+  };
+};
+
+const contentSelector = (contentArray, selector) => {
+  for (let j = 0; j < contentArray.length; j++) {
+    if (selector.includes(contentArray[j].image)) {
+      caption.textContent = contentArray[j].caption;
+    };
+  };
+};
+
+const imageChanger = (iterator) => {
+  thumbnailsList[iterator].classList.add('selected');
+  featureImg.src = thumbnailsList[iterator].querySelector('a').querySelector('img').src;
+  contentSelector(content, thumbnailsList[iterator].querySelector('a').querySelector('img').src);
+};
+
+for (let i = 0; i < thumbnailsList.length; i++) {
+  thumbnailsList[i].addEventListener('click', () => {
+    classRemover(thumbnailsList, 'selected');
+    imageChanger(i);
+  });
+};
+
+leftButton.addEventListener('click', () => {
+  for (let i = 0; i < thumbnailsList.length; i++) {
+    if (!thumbnailsList[0].classList.contains('selected')) {
+      if (thumbnailsList[i].classList.contains('selected')) {
+        thumbnailsList[i].classList.remove('selected');
+        imageChanger(i-1);
+      };
+    };
+  };
+});
+
+rightButton.addEventListener('click', () => {
+  for (let i = (thumbnailsList.length - 1); i >= 0; i--) {
+    if (!thumbnailsList[thumbnailsList.length - 1].classList.contains('selected')) {
+      if (thumbnailsList[i].classList.contains('selected')) {
+        thumbnailsList[i].classList.remove('selected');
+        imageChanger(i+1);
+      };
+    };
+  };
+});
